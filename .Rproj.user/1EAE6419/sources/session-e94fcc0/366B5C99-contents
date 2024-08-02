@@ -38,17 +38,18 @@ The role of Github desktop in linking together computer and the cloud
 
 ![GitHub Desktop linking desktop computer with cloud](images/linking%20computer%20cloud.jpg)
 
-```{r}
+## Lesson 4 Commit
 
-```
+All changes take place in GitHub. None of the changes have been updated into the remote repository.
 
-{r} 1 + 1
+## Lesson 5 Puss
 
-You can add options to executable code like this
+Now, it's time to send them to the cloud. Let's hit the **push** button! 🚀
 
-```{r}
-#| echo: false
-2 * 2
-```
+Our work folder exists in duplicate: one version resides locally, while the other is stored on [github.com](https://www.github.com/).
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Throughout the previous lessons, we've made changes to the local version of the repository, encapsulated in several **commits**.
+
+Now, it's time to synchronize the local changes with the version on GitHub! This process is accomplished through a procedure known as a **push**.
+
+![Pushing the local changes into GitHub cloud](images/push.jpg)
