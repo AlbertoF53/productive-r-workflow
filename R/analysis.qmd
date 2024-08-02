@@ -1,0 +1,295 @@
+---
+title: "Penguin Analysis"
+author: "Alberto F Cabrera"
+format:
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    self-contained: true
+    embed-resources: true
+    toc: true
+    theme: Zephyr
+    number-sections: false
+execute: 
+  warning: false
+  message: false
+  echo: false
+editor_options: 
+  chunk_output_type: console
+fig-cap-location: margin
+---
+
+## Introduction
+
+This is our first quarto document.
+
+```{r loading_files}
+#| echo: false
+#| warning: false
+
+library(tidyverse)
+library(palmerpenguins)
+library(janitor)
+library(readxl)
+```
+
+## Loading penguin data
+
+Loading penguin data and summarizing it. The dataset comes from [Palmerpenguins](https://allisonhorst.github.io/palmerpenguins/). It describes the *physical* characteristics of three **penguin** ***species***.
+
+```{r loading_data_summarizing}
+#| echo: true
+#| warning: false
+
+# Read the clean dataset
+
+#Option offered by the author
+#data <- readRDS(file = "../data/data_clean.rds")
+
+data <- readRDS("~/Documents/R-books/productive-r-workflow/data/data_clean.rds")
+
+
+#Sumarizing data
+
+summary(data)
+
+```
+
+Calculating mean bill length for different species and islands
+
+```{r calculating_mean}
+#| echo: true
+
+
+# Calculating mean bill length for different species and islands using dplyr
+data |> 
+  filter(species == "Adelie") |> 
+  group_by(island)  |> 
+  summarize(mean_bill_length = round(mean(bill_length_mm, na.rm = TRUE), 2))
+
+```
+
+```{r plotting_penguin_data_detailed}
+#| echo: true
+#| fig-align: "center"
+#| fig-width: 5
+#| fig-height: 5
+#| fig-cap: "Relationship between bill <b>length</b> and bill <b>depth</b>. <b>All</b> data points included."
+
+data |> 
+  ggplot(
+    aes(x = bill_length_mm, y = bill_depth_mm)
+  ) +
+    geom_point(color = "#69b3a2") +
+    labs(
+      x = "Bill Length (mm)",
+      y = "Bill Depth (mm)",
+      title = paste("Surprising relationship?")
+    ) + 
+  theme_minimal()
+
+```
+
+It is also interesting to note that `bill length` a and `bill depth` are quite different from one specie to another. This is summarized in the 2 tables below:
+
+```{r two_column_layout}
+#| layout-ncol: 2
+
+data %>%
+ group_by(species) %>% 
+  summarise(average_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+data %>%
+ group_by(species) %>% 
+  summarise(average_bill_depth = mean(bill_depth_mm, na.rm = TRUE))
+
+```
+
+## Invoking function & performing plots
+
+Loading the create-scatterplot function.
+
+```{r loading_data}
+#| echo: true
+
+#Invoking functions file
+
+#This option works if rending the quarto document
+source(file = "functions.R")
+
+#This option works if rendering the quarto document
+#source(file = "../R/functions.R")
+
+#This option works if ran individually
+#source(file = "R/functions.R")
+
+# Use the function in functions.R
+#create_scatterplot(data, "Adelie", "Torgersen")
+
+```
+
+### Scatter plot options
+
+Scatter plot with width = 3
+
+```{r scatter_plot_width_3_inches}
+#| echo: false
+#| fig-width: 3
+
+create_scatterplot(data,"Adelie","Torgesen")
+
+
+```
+
+Scatter plot with width = 6
+
+```{r scatter_plot_width_6_inches}
+#| echo: false
+#| fig-width: 6
+
+create_scatterplot(data,"Adelie","Torgesen")
+
+
+```
+
+Scatter plot with width = 9
+
+```{r scatter_plot_width_9_inches}
+#| echo: false
+#| fig-width: 9
+
+create_scatterplot(data,"Adelie","Torgesen")
+```
+
+Aligning the figure of 6 inches
+
+Aligning to the center
+
+```{r scatter_plot_width_6_inches_center}
+#| echo: false
+#| fig-width: 6
+#| fig-align: center
+
+create_scatterplot(data,"Adelie","Torgesen")
+
+```
+
+Aligning to the left
+
+```{r scatter_plot_width_6_inches_left}
+#| echo: false
+#| fig-width: 6
+#| fig-align: left
+
+create_scatterplot(data,"Adelie","Torgesen")
+
+```
+
+Aligning to the right
+
+```{r scatter_plot_width_6_right}
+#| echo: true
+#| fig-width: 6
+
+create_scatterplot(data,"Adelie","Torgesen")
+
+
+create_scatterplot(data,"Gentoo","Biscoe")
+
+```
+
+Figure capture margins
+
+```{r capture_margins}
+#| echo: true
+
+create_scatterplot(data,"Adelie","Torgesen")
+
+
+create_scatterplot(data,"Gentoo","Biscoe")
+
+
+
+```
+
+Adding equations:
+
+This formula $f(x) = x^2$ is an example
+
+The $X^2 =$ is
+
+Adding a kable() report
+
+```{r kable_penguin_report}
+#| echo: true
+
+library(tidyverse)
+library(knitr)
+library(palmerpenguins)
+
+table_penguins <- palmerpenguins::penguins %>%
+ group_by(species) %>% 
+  summarise(average_bill_depth = mean(bill_depth_mm, na.rm = TRUE),
+            average_bill_depth_mm = mean(bill_depth_mm, na.rm = TRUE))
+
+
+kable(table_penguins)
+
+
+```
+
+```{r author_approach}
+#| echo: true
+library(tidyverse)
+library(knitr)
+library(palmerpenguins)
+
+
+
+bill_length_per_specie <- palmerpenguins::penguins |> 
+ group_by(species)  |>  
+  summarise(average_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+kable(bill_length_per_specie)
+
+bill_depth_per_specie <- palmerpenguins::penguins %>%
+ group_by(species) %>% 
+  summarise(average_bill_depth = mean(bill_depth_mm, na.rm = TRUE))
+
+kable(bill_depth_per_specie)
+
+bill_length_adelie <- bill_length_per_specie %>%
+  filter(species == "Adelie") %>%
+  pull(average_bill_length) %>%
+  round(2)
+
+
+```
+
+For instance, the average bill length for the specie `Adelie` is `r bill_length_adelie`.
+
+Now, let’s check the relationship between bill depth and bill length for the specie `Adelie` on the island `Torgersen`:
+
+```{r}
+#Calling function
+
+# Source functions
+source(file = "functions.R")
+
+```
+
+```{r relationship_species}
+#| echo: true
+
+# Source functions
+#source(file = "functions.R")
+
+p1 <- create_scatterplot(data, "Adelie", "Torgersen")
+p2 <- create_scatterplot(data, "Chinstrap", "Dream")
+p3 <- create_scatterplot(data, "Gentoo", "Biscoe")
+
+p1 + p2 + p3
+
+
+```

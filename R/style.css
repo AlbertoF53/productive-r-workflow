@@ -1,0 +1,41 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww18320\viewh16380\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs26 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 /* Space on top of the main title */\
+h1 \{\
+  padding-top: 100px;\
+\}\
+\
+/* Space on top of titles of level 2 and 3 */\
+h2, h3 \{\
+    padding-top: 84px;\
+\}\
+\
+/* Link font color */\
+a \{\
+    color: #69b3a2;\
+\}\
+\
+/* TOC color (left border and font color) */\
+.sidebar nav[role=doc-toc] ul>li>a.active, .sidebar nav[role=doc-toc] ul>li>ul>li>a.active \{\
+    border-left: 1px solid #69b3a2;\
+    color: #69b3a2 !important;\
+\}\
+\
+/* No rounded corners for callouts */\
+.callout \{\
+    border-radius: 0\
+\}\
+\
+/* Make the "Show code" buttons very discrete (size and transparency) */\
+details > summary \{\
+    font-size: 12px;\
+    opacity: .5;\
+\}\
+}

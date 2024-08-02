@@ -1,0 +1,306 @@
+---
+title: "Productive R Workflow Module 3"
+author: "Alberto F Cabrera"
+date: July 31, 2024
+format:
+  html:
+    code-link: true
+    code-fold: true
+    self-contained: true
+    embed-resources: true
+    toc: true
+    theme: Zephyr
+    number-sections: true
+execute: 
+  warning: false
+  message: false
+  echo: false
+editor_options: 
+  chunk_output_type: console
+---
+
+## Lesson 1
+
+### Clean tables
+
+Author discusses two preferred methods for incorporating tables in Quarto documents. Different approaches are discussed in this [link](https://r-graph-gallery.com/table.html).
+
+### Interactive tables with DT
+
+Here is one of my go-to techniques when showcasing Quarto 😍.
+
+With just **two extra lines** of code, you can unveil an interactive table that allows:
+
+-   sorting
+
+-   filtering
+
+-   searching
+
+-   pagination
+
+It offers readers the convenience of accessing the data directly within your report. The magic of this functionality rests in the DT library. DT stands for DataTables: the JavaScript library supports it.
+
+```{r example_dt_iris}
+#| echo: true
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(DT)
+
+# Make a DT table using iris database
+
+datatable(iris, filter = "top")
+
+```
+
+### Static tables with kable() from the package knitr
+
+```{r kable_table}
+#| echo: true
+
+library(knitr)
+library(tidyverse)
+
+#Compute some result
+
+bill_length_per_specie <- palmerpenguins::penguins |> 
+  group_by(species) |> 
+  summarise(average_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+#Display in the quarto report
+
+kable(bill_length_per_specie )
+
+
+
+```
+
+## Lesson 2
+
+Interactive tables
+
+An interactive chart allows the user to **perform actions**: **zooming**, **hovering** a marker to get a tooltip, **choosing** a variable to display and more.
+
+R offers a set of packages called the [html widgets](https://www.htmlwidgets.org/).
+
+They allow to build interactive charts **directly from R**. 🔥
+
+This course is not about data visualization and I already curated the best packages for interactive dataviz in the [R graph gallery](https://r-graph-gallery.com/interactive-charts.html).
+
+### Plotly and ggplotly()
+
+```{r gapminder_sctterplot}
+#| echo: true
+
+library(tidyverse)
+library(gapminder)
+
+p <- gapminder %>%
+  filter(year == 1977) %>%
+  ggplot( aes(gdpPercap, lifeExp, size = pop, color = continent)) +
+  geom_point() +
+  theme_bw()
+
+p
+
+```
+
+ggplotly provides information for each point displayed in the graph. On the following chart you can zoom, hover, pan, export to png and more!
+
+```{r aliving_with_ploty}
+#| echo: true
+
+library(plotly)
+ggplotly(p)
+
+
+```
+
+I find `plotly` so convenient: it's an instant win without the need to learn anything new!
+
+However, **it's not always the ideal choice**. For instance `Leaflet` is better suited for mapping, and `Dygraph` excels in handling time series data. I've detailed these alternatives in the [R Graph Gallery](https://r-graph-gallery.com/interactive-charts.html) if you're interested!
+
+Also, remember that **not all graphs require interactivity**. For example, a basic bar chart remains just as effective in its static form, containing all the necessary information.
+
+## Lesson 3
+
+Report header
+
+In Quarto, you have the flexibility to include extensive information in the document header.
+
+While the official documentation offers a [comprehensive list](https://quarto.org/docs/authoring/front-matter.html) of options, it's important to strike a balance to prevent overwhelming readers.
+
+Here's an example of a Quarto header that effectively incorporates these elements in the YAML section of the Quarto document :
+
+```         
+title: "Exploring the Simpson's Paradox..."
+subtitle: "And simultaneously demonstrating ..." 
+description: "This document is..."
+
+author: 
+name: "Yan Holtz"
+affiliation: "Independant 😀"
+email: yan.holtz.data@gmail.com
+
+keywords: "Quarto, Paradox, Data Analysis"
+date: today
+```
+
+#### Header appearance
+
+With our informative header in place, let's enhance its **visual appeal**.
+
+One effective method is to utilize the `title-block-banner` option to introduce a **background color**, adding depth to the header. It subtly **elevates its presence**.
+
+Quarto opens up **endless possibilities** for customization.
+
+→ The [Front Matter](https://quarto.org/docs/authoring/front-matter.html) and [Title blocks](https://quarto.org/docs/authoring/title-blocks.html) sections provide a comprehensive list of out-of-the-box options, covering licenses, copyrights, citations, multiple authors, metadata labels, and more.
+
+→ Later in the course, we'll explore **CSS techniques** to customize any element within the report.
+
+→ For advanced users, [template partials](https://quarto.org/docs/journals/templates.html#template-partials) offer the ability to build the header structure from scratch, although this is a more advanced feature.
+
+## Lesson 4
+
+Apply your style with CSS
+
+his course teaches you how to transform your R code into a visually appealing report in **HTML format**.
+
+Essentially, we're creating a **miniature website** 🔥!
+
+It is time to understand what HTML is, and explore how to **personalize it using CSS**, a stylesheet language.
+
+<h1>Hello World!</h1>
+
+<p>I am a tiny website</p>
+
+![Anatomy of htlm](images/htlm_anatomy.jpeg)
+
+When encountering a tag like `h1`, it recognizes it as a level 1 title and know how to format it accordingly. Same with the `p` tag that stands for paragraph, and all [other tag types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+
+### Style it with CSS
+
+[CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) is the language we use to **style** an HTML document.
+
+Basically, we could create a file called `style.css` and add the following content in it:
+
+```         
+h1 {
+  color: red;
+}
+```
+
+Quarto, HTML and CSS
+
+## Lesson 5
+
+Create your dataviz theme
+
+Creating a custom theme for ggplot2
+
+### The theme() function
+
+```{r ggplot_theme_example}
+#| echo: true
+
+library(tidyverse)
+
+ggplot(mtcars, aes(x = mpg, y = wt)) +
+geom_point() +
+labs(title = "Customized Scatterplot", x = "Miles Per Gallon", y = "Weight") +
+
+theme(
+plot.title = element_text(color = "#69b3a2", size = 14, face = "bold"),
+plot.margin = margin(3, 3, 3, 3, "cm")
+)
+
+```
+
+### A set of predefined theme
+
+Customizing a theme can feel **overwhelming**, with numerous options available to tweak and adjust.
+
+However, a plethora of predefined themes exist, ready to be utilized in a matter of seconds!
+
+Within the `ggplot2` library alone, [eight distinct themes](https://ggplot2.tidyverse.org/reference/ggtheme.html) are readily available, with `theme_grey()` serving as the default and `theme_minimal` emerging as a popular alternative
+
+Furthermore, beyond ggplot2's native themes, numerous [external packages](https://r-graph-gallery.com/192-ggplot-themes.html) offer additional thematic options. Among them, one that I love is the `theme_ipsum()` theme from the `hrbrthemes` package:
+
+```{r ggplot_themes_variety}
+#| echo: true
+
+library(hrbrthemes)
+library(tidyverse)
+
+
+ggplot(mtcars, aes(x = mpg, y = wt)) +
+  geom_point() +
+  labs(title = "Customized Scatterplot", x = "Miles Per Gallon", y = "Weight") +
+  
+  theme_ipsum() +
+  theme(
+    plot.title = element_text(color = "#69b3a2", size = 14, face = "bold"),
+  )
+
+```
+
+### **Make your own theme**
+
+To elevate your visualizations to the next level of refinement, creating your **own theme** based on one of the predefined themes is the optimal strategy.
+
+For example, let's build a theme called `yan_holtz_theme` which builds upon the `ipsum` theme:
+
+```{r creating_theme_function}
+#| echo: true
+
+yan_holtz_theme <- function() {
+  theme_ipsum() +
+    theme(
+      plot.title = element_text(color = "#69b3a2", size = 18, face = "bold"),
+      axis.text.x = element_text(size = 7),
+      axis.text.y = element_text(size = 7)
+    )
+}
+
+```
+
+This theme changes the title color and makes it pretty big. It also decreases the size of the axis text elements.
+
+Now, let's apply the theme to a graph:
+
+```{r applying_theme_function_graph}
+#| echo: true
+
+mtcars |>
+  ggplot(aes(x = mpg, y = wt)) +
+  geom_point() +
+  labs(title = "Customized Scatterplot", 
+       x = "Miles Per Gallon", y = "Weight") +
+  yan_holtz_theme()
+
+```
+
+This is convenient! I can now use the `yan_holtz_theme()` on any chart to have an **uniformity** without repeating myself too much.
+
+You can also set the theme at the beginning of your Quarto doc and stop worrying about style for the whole study.
+
+```         
+theme_set(yan_holtz_theme())
+```
+
+## Lesson 6
+
+More Quarto tips
+
+The level of customization possible in a Quarto document is practically **limitless**. 🙃
+
+In the previous lesson, I endeavored to distill the **most essential concepts** for you. However, enumerating all the possibilities would likely result in a **rather tedious course**.
+
+\
+Instead, armed with a solid Quarto foundation, I recommend perusing the [compilation of Quarto tips](https://www.productive-r-workflow.com/quarto-tricks) and tricks I maintain.
+
+I'm confident you'll discover several **valuable insights** that you'll be eager to incorporate into your next report!
+
+------------------------------------------------------------------------

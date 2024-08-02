@@ -1,0 +1,223 @@
+---
+title: "Productive R Workflow Module 2"
+author: "Alberto F. Cabrera"
+format:
+  html:
+    code-link: true
+    code-fold: true
+    self-contained: true
+    embed-resources: true
+    toc: true
+    theme: Zephyr
+    number-sections: true
+execute: 
+  warning: false
+  message: false
+  echo: false
+editor_options: 
+  chunk_output_type: console
+---
+
+# Productive R Workflow Workshop
+
+## Module 2
+
+### Lesson 1
+
+A data science notebook is an innovative environment where **code, results, and explanations coexist** seamlessly.
+
+If you're using basic R scripts, let's explore how this can be a **game-changer** for you.
+
+#### Definition of notebook
+
+A notebook is a document in which you can display and run **both** your code and your explanation.
+
+You write some text, then write some code like `2 + 2` or `plot(1,1)`, and it creates a beautiful document with everything.
+
+#### Why notebooks
+
+Notebooks are going to make your life easier for 4 main reasons:
+
+-   **Productivity**: no more copy-paste. No more uncommented scripts that are impossible to understand.
+
+-   **Reproducibility**: your notebook is the source of truth, and you can re-run the whole analysis in 1 click.
+
+-   **Collaboration**: people can easily follow and understand your work by reading the report.
+
+-   **Interactivity**: the notebook can be exported as an html report, so you can include interactive charts, tables and more.
+
+### Lesson 2
+
+It showcase the creation of the analysis Quarto document. Notice this file displays several options to retrieve the data, mostly referencing the location of the file. Two options work for rendering the quarto document. Another when running the program itself.
+
+### Lesson 3
+
+Showcases how to edit ab htlml document using Markdown.
+
+#### Emphasis & code
+
+To make text **bold**, wrap it with two asterisks `**` or underscores `__`.
+
+To make text *italic*, use one asterisk `*` or underscore `_`.
+
+To add something related to code, wrap it in back-ticks `` ` ``.
+
+Case in point. We can bold penguins with \* asterisk as *penguins*. Or we could italize penguins with "-" *penguins*. Or we could wrap the word with ticks `penguins`.
+
+To strike words use \~\~ \~\~ for example strike this ~~this~~
+
+For line breaks
+
+Links and images
+
+To create hyperlink [Google](www.google.com)
+
+### Lesson 4
+
+Correct procedure to embedding R Code with a Quarto report.
+
+##### Hide warnings and errors
+
+Use warning = FALSE and message = FALSE
+
+Two ways to do it. Inserting these two options within YAML execute section. Or inserting them in the code chunk as follows
+
+```{r illusrating_eliminating_warnings_message}
+#| echo: true
+#| warning: false
+#| message: false
+
+library(tidyverse)
+
+
+```
+
+##### Collapse code in document
+
+You cab enhance document readability by collapsing all code chunks. This is done through the **YAML** header., which allows focusing on *content* rather than the code.
+
+```         
+---
+title: "Your Document Title"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+```
+
+### Lesson 5
+
+##### Controlling figure size
+
+Controlling the width and height of a figure using the `figure.width` and `fig.hight` options. These dimensions are specified in inches.
+
+On the web, we usualy have **96 [P]{.underline}ixels [P]{.underline}er [I]{.underline}nch** (PPI). And by default, a Quarto document is rendered with a **width** of 900 pixels.
+
+Setting the chart's width to ***9*** inches thus ensures it spans the **full width** of the page. See examples in the analysis.qmd quarto document.
+
+##### Responsiveness
+
+Responsiveness in web design means that your content, including figures, **adjusts to the screen size** of the device it's being viewed on. This is **crucial** for maintaining a user-friendly experience.
+
+Trust me, you **will** have people reading your report on their phone.
+
+##### Figure alignment
+
+Different preferences for figure alignment, such as **left**, **center**, or **right**, can be easily managed in Quarto by using the chunk parameters `fig.align='left'`, `fig.align='center'`, or `fig.align='right'`, respectively.
+
+##### Multiple figures
+
+Displaying **multiple charts side by side** is a frequent requirement for a clean Quarto report. By default, charts generated within a single code chunk are displayed **one after the other vertically**, consuming considerable space on the page.
+
+To address this, we'll explore **two effective strategies** for optimizing layout and conserving space.
+
+###### Using Patchwork
+
+```{r cars_patchwork}
+#| echo: true
+
+library(patchwork)
+
+
+p1 <- ggplot(mtcars) + geom_point(aes(mpg,disp))
+
+p2 <- ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
+
+p1 + p2
+
+```
+
+Examples of [patchwork](https://r-graph-gallery.com/package/patchwork.html) gallery.
+
+###### Quarto options
+
+Quarto includes comprehensive features for customizing the **layout** of figures. One of the most straightforward options is the `layout-ncol` feature. This allows you to specify the **number of columns** across which your graphs should be displayed.
+
+An added advantage of this approach is its **responsiveness**. When viewed on narrower screens, the graphs will **automatically stack vertically**, ensuring clarity and readability.
+
+###### Caption
+
+It's likely that many will **only skim** your report, focusing primarily on the **titles**, **graphs**, and their **captions**.
+
+Therefore, these elements must independently **convey a compelling narrative**. This highlights the critical role of captions; they should succinctly clarify what isn't immediately apparent from the graph alone.
+
+Adding captions is straightforward with the `fig.cap` chunk parameter. A useful technique I favor is placing the caption **in the margin**, achievable through a specific YAML header parameter:
+
+Include images
+
+### 5 more little tips
+
+#### Table of contents
+
+You can use the `toc` option to include an automatically generated **table of contents** in the output document. This is how it looks in the YAML header:
+
+---
+title: "Penguin Analysis"
+format:
+html:
+toc: true
+...other YAML header parameters
+---
+
+A few other related option that you can play with, but the default are pretty good already in my opinion:
+
+-   `toc-depth`: number of section levels to include
+
+-   `toc-expand`: how much of the table of contents to show initially
+
+-   `toc-title`: TOC title
+
+-   `toc-location`: TOC side, `right` or `left`
+
+#### Section numbering
+
+For automatic section numbering, leverage the `number-sections` option in the YAML header. This approach directs Quarto to systematically number your document's sections upon rendering, aligning with the hierarchy established by your headings (such as `#`, `##`, `###` in Markdown).
+
+While manual numbering might seem straightforward, it's **time-consuming** and **prone to errors**, especially in lengthy or complex documents.
+
+#### Equation
+
+To add equations in a Quarto document, you can use the **LaTeX syntax**, which is widely used for typesetting mathematical content.
+
+For **inline equations**, enclose your LaTeX code within single dollar signs (`$`). For example, $E=mc^2$ renders the famous equation inline with the text.
+
+For **display equations**, which are centered and on their own line, use double dollar signs (`$$`) around your LaTeX code. For example, $$E=mc^2$$ will render the equation centered on its own line.
+
+If you don't know how to write equations, you can check [this full reference](https://en.wikibooks.org/wiki/LaTeX/Mathematics), but [this tutorial](https://latex-tutorial.com/tutorials/amsmath/) is more user friendly.
+
+This formula $f(x) = x^2$ is an example
+
+The association is significant $X^2 =$ is significant
+
+#### Dynamic variable integration
+
+Imagine you've calculated a variable named `avg_height` in a code chunk, and its current value is `87`.
+
+To dynamically incorporate this variable into your text, you can use the syntax `` `r avg_height` ``.
+
+#### Callouts
+
+Callouts in Quarto documents allow for the inclusion of specialized blocks of text to guide the reader’s attention to important pieces of information.
+
+Callouts are created by enclosing the text in a block **with a specific class attribute**. For example, to create a `note` callout, you would use the following syntax:

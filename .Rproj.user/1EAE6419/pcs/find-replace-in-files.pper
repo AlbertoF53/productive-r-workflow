@@ -1,0 +1,16 @@
+{
+    "dialog-state": {
+        "query": "saveRDS",
+        "path": "/Users/albertofcabrera/Documents/R-books",
+        "regex": false,
+        "caseSensitive": false,
+        "wholeWord": false,
+        "filePatterns": [],
+        "useGitGrep": false,
+        "excludeGitIgnore": true,
+        "excludeFilePatterns": [],
+        "resultsCount": 1,
+        "errorCount": 0,
+        "replaceErrors": ""
+    }
+}

@@ -1,0 +1,180 @@
+---
+title: "Penguin"
+format:
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    self-contained: true
+    embed-resources: true
+    toc: true
+    theme: Zephyr
+    number-sections: true
+execute: 
+  warning: false
+  message: false
+  echo: false
+editor_options: 
+  chunk_output_type: console
+fig-cap-location: margin
+---
+
+::: callout-caution
+## A few considerations about this doc
+
+This Quarto document serves as a practical illustration of the concepts covered in the productive workflow online course
+:::
+
+## Introduction
+
+This document offers a straightforward analysis of the well-known penguin dataset. It is designed to complement the [Productive R Workflow](https://www.productive-r-workflow.com) online course.
+
+You can read more about the penguin dataset [here](https://allisonhorst.github.io/palmerpenguins/).
+
+Let's load libraries before we start!
+
+```{r loading_libraries}
+#| echo: true
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(hrbrthemes)    # ipsum theme for ggplot2 charts
+library(patchwork)     # combine charts together
+```
+
+## Loading data
+
+The dataset has already been loaded and cleaned in the previous step of this pipeline.
+
+Let's load the clean version, together with a few functions available in `functions.R`.
+
+```{r source_functions_reading_data}
+#| echo: true
+
+
+# Source functions
+source(file = "functions.R")
+
+# Read the clean dataset
+data <- readRDS(file = "../data/data_clean.rds")
+
+
+```
+
+![Appraising penguins' bill length and depth](images/culmen_depth.png){fig-align="center"}
+
+## Bill Length and Bill Depth
+
+Now, let's make some descriptive analysis, including <b>summary statistics</b> and <b>graphs</b>.
+
+What's striking is the <b>slightly negative relationship</b> between `bill length` and `bill depth`:
+
+$${\displaystyle Avg={\frac {1}{n}}\sum _{i=1}^{n}a_{i}={\frac {a_{1}+a_{2}+\cdots +a_{n}}{n}}}$$
+
+```{r surprising_relationship_plot}
+#| echo: true
+#| warning: false
+#| fig-align: "center"
+#| fig-width: 5
+#| fig-height: 5
+#| fig-cap: "Relationship between bill <b>length</b> and bill <b>depth</b>. <b>All</b> data points included."
+
+library(hrbrthemes)
+
+palmerpenguins::penguins |> 
+  filter(!is.na(sex)) |> 
+  ggplot(
+    aes(x = bill_length_mm, y = bill_depth_mm)
+  ) +
+    geom_point(color = "#69b3a2") +
+    labs(
+      x = "Bill Length (mm)",
+      y = "Bill Depth (mm)",
+      title = paste("Surprising relationship?")
+    ) + 
+  theme_ipsum()
+
+
+```
+
+It is also interesting to note that `bill length` a and `bill depth` are quite different from one specie to another. This is summarized in the 2 tables below:
+
+```{r two_columns}
+#| echo: true
+#| layout-ncol: 2
+
+data %>%
+ group_by(species) %>% 
+  summarise(average_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+data %>%
+ group_by(species) %>% 
+  summarise(average_bill_depth = mean(bill_depth_mm, na.rm = TRUE))
+```
+
+::: callout-warning
+## The three plots are not displayed correctly unlike the author's rendition
+:::
+
+Now, let's check the relationship between bill depth and bill length for the specie `Adelie` on the island `Torgersen`:
+
+```{r relationship}
+#| echo: true
+#| warning: false
+
+
+# Use the function in functions.R
+p1 <- create_scatterplot(data, "Adelie", "Torgersen")
+p2 <- create_scatterplot(data, "Chinstrap", "Biscoe")
+p3 <- create_scatterplot(data, "Gentoo", "Dream")
+
+(p1 + p2) / p3
+
+
+```
+
+## Displaying penguins data as a DT table
+
+```{r dt_penguin_table}
+#| echo: true
+
+
+library(palmerpenguins)
+library(tidyverse)
+library(DT)
+
+data_clean <- readRDS("~/Documents/R-books/productive-r-workflow/data/data_clean.rds")
+
+datatable(data_clean, filter = "top")
+
+
+```
+
+Making scatterplot interactive
+
+```{r interactive_scatterplot}
+#| echo: true
+library(tidyverse)
+library(plotly)
+
+
+library(hrbrthemes)
+
+penguins <- palmerpenguins::penguins |> 
+  filter(!is.na(sex)) |> 
+  ggplot(
+    aes(x = bill_length_mm, y = bill_depth_mm)
+  ) +
+    geom_point(color = "#69b3a2") +
+    labs(
+      x = "Bill Length (mm)",
+      y = "Bill Depth (mm)",
+      title = paste("Surprising relationship?")
+    ) + 
+  theme_ipsum()
+
+ggplotly(penguins)
+
+
+```

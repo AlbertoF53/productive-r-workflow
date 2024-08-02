@@ -1,0 +1,401 @@
+---
+title: "Productive R Workflow Module 1"
+author: "Alberto F. Cabrera"
+format:
+  html:
+    code-link: true
+    code-fold: true
+    self-contained: true
+    embed-resources: true
+    toc: true
+    theme: Zephyr
+    number-sections: false
+execute: 
+  warning: false
+  message: false
+  echo: false
+editor_options: 
+  chunk_output_type: console
+---
+
+# Productive R Workflow Workshop
+
+## Module 1
+
+### Lesson 3
+
+This lesson outlines best practices and introduced a tool for automatic styling
+
+#### Automatic formatting with {styler}
+
+```{r messy_codying}
+#| echo: true
+
+cleaNDatA = data |> 
+  rename(ID = 1,Name = 2     ,Age = 3) |> 
+    mutate(Age=ifelse(Age < 0, NA,     Age)) %>% drop_na() |> 
+      mutate(Age =       as.integer(Age)) |> 
+  select(-Name)
+```
+
+Using styler to clean in
+
+```{r using_styler}
+#| echo: true
+
+cleaNDatA <- data |>
+  rename(ID = 1, Name = 2, Age = 3) |>
+  mutate(Age = ifelse(Age < 0, NA, Age)) %>%
+  drop_na() |>
+  mutate(Age = as.integer(Age)) |>
+  select(-Name)
+
+```
+
+#### Tidyverse style guide
+
+Using good names
+
+-   Give meaningful names to variables
+
+-   Use snake_case
+
+-   Use verbs for function names
+
+Add spaces where needed
+
+Use short lines
+
+-   No more than 80 characters
+
+Comment your code using \#
+
+-   Short explanation of what you did
+
+Use semicolons ; at the end of the line
+
+Assignment
+
+-   Use \<- instead of =
+
+### StylerR: Automatic Styling in RStudio
+
+The best way to use styleR is through RStudio
+
+-   Install library(styler) ad use the drop down button labeled **Addins**
+
+### Lesson 4
+
+### Create folders for the project
+
+Make the project self contained. Consider using the following sections or folder structure.
+
+-   input or data
+
+-   output
+
+-   R for R scripts
+
+-   The penguin dataset is currently downloaded [from the web](https://raw.githubusercontent.com/holtzy/R-graph-gallery/master/DATA/data_2.csv)
+
+-   Instead save in the data folder
+
+### Lesson 5
+
+**Ditch setwd() - Use RStudio projects**
+
+Each project should have its own working directory, workspace and source documents
+
+Using getwd() to check current directory
+
+### Lesson 6
+
+Never ever modify raw data
+
+Create a folder for raw data, and never edit it.
+
+### Lesson 7
+
+Directly read files for, their original Excel format. Avoid converting them into .csv prior to processing
+
+The readxl package makes it easey to get data directly into Excel and into R. A complete list of function associated with readxl can be found [here](https://readxl.tidyverse.org/).
+
+```         
+# ONLY ONCE: install the package
+install.packages("tidyverse")
+
+# Load the package (not that it is not part of the core tidyverse!)
+library(readxl)
+
+# Read a file
+data <- read_excel("data.xlsx")
+```
+
+#### Reading a specific sheet
+
+```{r reading_sheet}
+
+data <- read_excel("data.xlsx", sheet = "sheetNameOrNumber")
+
+```
+
+Specifying how missing data are to be coded
+
+```{r missing_data_readxl}
+
+data <- read_excel("data.xlsx", na = "-")
+
+```
+
+Specifying column types:
+
+```{r specifying_column_types}
+
+data <- read_excel("data.xlsx", col_types = c("date", "skip", "guess", "numeric"))
+```
+
+Reading the penguin data as an Excel file
+
+```{r reading_excel_penguin_data}
+
+library(tidyverse)
+library(readxl)
+
+penguins <- read_excel("data/data.xlsx")
+
+
+
+```
+
+### Lesson 8
+
+Everything starts with the **function name**. It includes a **verb** since a function always **does** something. Make the name self explanatory! For instance, `multiply_by_two` is much better than `function1`! We understand directly what it does.
+
+Creating a function that computes the mean bill length of the three species of penguins: Togersen, Biscoe and Dream
+
+```{r creating_calc_mean_bill}
+#| echo: false
+
+penguins <- read_excel("data/data.xlsx")
+
+
+calc_mean_bill <- function(island_name) {
+  filtered_data <- subset(na.omit(penguins), species == "Adelie" & island == island_name)
+  mean_bill_length <- mean(filtered_data$bill_length_mm)
+  return(round(mean_bill_length, 2))
+}
+
+# Call the function for each island
+
+calc_mean_bill("Torgersen")
+calc_mean_bill("Biscoe")
+calc_mean_bill("Dream")
+
+#Call the function for each island
+
+calc_mean_bill("Togersen")
+
+calc_mean_bill("Biscoe")
+
+calc_mean_bill("Dream")
+
+
+```
+
+Creating a function that multiplies two values
+
+```{r multiplication_two_values}
+
+multiply_two_values <-  function(x, y) {
+  return(x * y)
+}
+
+multiply_two_values(x = 234, y = 311)
+
+
+```
+
+Adding two values function
+
+```{r adding_two_values}
+
+library(scales)
+library(tidverse)
+
+adding_two_values <- function(x, y ) {
+  return(scales::comma(x + y))
+}
+
+adding_two_values(x = 3256, y = 8934)
+
+```
+
+Penguin scatterplot
+
+```{r relationship_bill_length_bill_depth}
+
+penguins <- read_excel("data/data.xlsx")
+
+
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point()
+
+scatter_plot <- function(x, y) {
+  return(ggplot(palmerpenguins::penguins, aes(x = x, y = y)) +
+  geom_point())
+}
+
+scatter_plot(x = penguins$bill_length_mm, y = penguins$bill_depth_mm)
+
+scatter_plot_island_species <- function(island, species) {
+  return(ggplot(palmerpenguins::penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point())
+}
+
+scatter_plot_island_species("Torgesen","Adelie")
+
+scatter_plot_island_species("Biscoe","Gentoo")
+
+
+
+```
+
+Another version by the author himself
+
+```{r function_by_author}
+#| echo: true
+
+plot_function <- function(selected_data, selected_species,selected_island) {
+
+  #Filtered data by removing missing cases
+  filtered_data <-  selected_data |> 
+    filter(!is.na(bill_depth_mm)) |> 
+    filter(!is.na(bill_length_mm))
+  
+  
+  #Create the scatterplot
+  
+  plot <- ggplot(
+    data = filtered_data,
+    aes(x = bill_length_mm, y = bill_depth_mm,
+    color = species,
+    shape = species) ) +
+    geom_point() +
+    labs(
+      x = "Bill length (mm)",
+      y = "Bill depth (mm)",
+      title = paste("Penguin Bill Dimensions -", selected_species, "-", selected_island )
+    ) +
+    theme_minimal(base_size = 16,
+                  base_family = "Source Sans Pro") +
+    theme(panel.grid.minor = element_blank(),
+          plot.title.position = "plot")
+    
+  return(plot)
+  
+}
+
+plot_function(selected_data = palmerpenguins::penguins,
+              selected_species = "Gentoo",
+              selected_island = "Torgesen")
+
+
+
+```
+
+### Lesson 9
+
+Split your work
+
+#### Use function. Source() them
+
+If the functions are big, you can isolate them in another file. You can create a script file titled `functions.R` to save the, Then you can use the function `source()` to call them.
+
+See the file analysis.R in the folder R for an example as to how to call for functions
+
+```{r calling_a_function}
+#| echo: true
+
+library(tidyverse)
+library(scales)
+library(palmerpenguins)
+
+#Example of calling a function to perform scatterplot of penguins
+
+source(file = "R/functions.R")
+
+create_scatterplot(selected_data = data,
+                   selected_species = "Gentoo",
+                   selected_island = "Biscoe")
+
+
+
+create_scatterplot(selected_data = palmerpenguins::penguins,
+                   selected_species = "Chinstrap",
+                   selected_island = "Biscoe")
+
+
+
+```
+
+### Create intermediate datasets
+
+R provides the efficient `.rds` format for storing R objects. This format can be conveniently used to save and subsequently load data using the `saveRDS()` and `readRDS()` functions. The `.rds` format is **lightweight** and **fast**, offering a more efficient alternative to traditional CSV files.
+
+```{r saving_penguins_as_rds_file}
+#| echo: true
+
+library(readxl)
+data <- read_excel("data/data.xlsx")
+View(data)
+
+
+```
+
+### Lesson 10
+
+Using shortcuts
+
+1.  Running: cmd + enter
+
+2.  Saving files: cmd + s
+
+3.  Undo change: cmd + Z
+
+4.  Selecting the entire script: cmd + A
+
+5.  Search & replace: cmd + F
+
+6.  Going to the end of the line: cmd + -\>
+
+7.  Go to start of line: cmd + -\>
+
+8.  Go to end of next word: option + -\>
+
+9.  Go to the beginning of a previous word: option + \<-
+
+### Lesson 11
+
+Managing libraries efficiently
+
+1.  Do you really need the package?
+
+    1.  You can evaluate the credibility of a package by looking at the number of **downloads**, last **update date**, and the number of **stars on github**.
+
+2.  Load at the start
+
+3.  Only necessary packages
+
+4.  Reproducibility
+
+    1.  You need to track what version of the packages have been used for your analysis.
+
+        1.  There are 2 main ways to do so:
+
+            1.  Using the `sessionInfo()`
+
+            2.  Using the `renv` package.
+
+5.  Give credit
+
+    1.  citation(tidyverse) See also [How to cite R](https://ropensci.org/blog/2021/11/16/how-to-cite-r-and-r-packages/)

@@ -1,0 +1,54 @@
+---
+title: "Productive R Workflow Module 4"
+author: "Alberto F Cabrera"
+date: August 2, 2024
+format:
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    self-contained: true
+    embed-resources: true
+    toc: true
+    theme: Zephyr
+    number-sections: true
+execute: 
+  warning: false
+  message: false
+  echo: false
+editor_options: 
+  chunk_output_type: console
+---
+
+# Git and Github
+
+This module is organized into 6 lessons. Those range from defining Github to revisiting old codes.
+
+## Lesson 1 What is Github
+
+What is Github
+
+GitHub is the ultimate online platform for **hosting code**, where millions of developers **store** and **share** their projects.
+
+![Anatomy of GitHub and desktop](images/github.jpg)
+
+## Lesson 2 Github Desktop
+
+The role of Github desktop in linking together computer and the cloud
+
+![GitHub Desktop linking desktop computer with cloud](images/linking%20computer%20cloud.jpg)
+
+```{r}
+
+```
+
+{r} 1 + 1
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
