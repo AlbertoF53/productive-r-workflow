@@ -53,3 +53,7 @@ Throughout the previous lessons, we've made changes to the local version of the 
 Now, it's time to synchronize the local changes with the version on GitHub! This process is accomplished through a procedure known as a **push**.
 
 ![Pushing the local changes into GitHub cloud](images/push.jpg)
+
+## Lesson 6 From repo to website
+
+Let's explore how GitHub can transform it into a mini website, accessible through a URL.
