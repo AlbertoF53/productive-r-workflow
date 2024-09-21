@@ -272,24 +272,24 @@ For instance, the average bill length for the specie `Adelie` is `r bill_length_
 Now, let’s check the relationship between bill depth and bill length for the specie `Adelie` on the island `Torgersen`:
 
 ```{r}
-#Calling function
-
-# Source functions
-source(file = "functions.R")
+# #Calling function
+# 
+# # Source functions
+# source(file = "functions.R")
 
 ```
 
 ```{r relationship_species}
-#| echo: true
-
-# Source functions
-#source(file = "functions.R")
-
-p1 <- create_scatterplot(data, "Adelie", "Torgersen")
-p2 <- create_scatterplot(data, "Chinstrap", "Dream")
-p3 <- create_scatterplot(data, "Gentoo", "Biscoe")
-
-p1 + p2 + p3
-
+# #| echo: true
+# 
+# # # Source functions
+# # #source(file = "functions.R")
+# # 
+# p1 <- create_scatterplot(data, "Adelie", "Torgersen")
+# p2 <- create_scatterplot(data, "Chinstrap", "Dream")
+# p3 <- create_scatterplot(data, "Gentoo", "Biscoe")
+# 
+# p1 + p2 + p3
+# 
 
 ```

@@ -57,3 +57,19 @@ Now, it's time to synchronize the local changes with the version on GitHub! This
 ## Lesson 6 From repo to website
 
 Let's explore how GitHub can transform it into a mini website, accessible through a URL.
+
+Github allows to transform a repository in a **website**!
+
+Click setting and then Pages.
+
+## Lesson 7 Cloning
+
+You've just acquired a new computer 🎉. Now it's time to **replicate** your GitHub Repository on it!
+
+This process is known as **cloning**. Let's delve into how it works.
+
+Publishing versus cloning
+
+**Publishing** is when you take your local work to start a new repository online (on GitHub).
+
+**Cloning** is the opposite: you take your GitHub Repository and duplicate it on your computer.
