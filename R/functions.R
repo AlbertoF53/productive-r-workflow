@@ -13,6 +13,7 @@ library(tidyverse)
 library(gt)
 library(gtExtras)
 library(scales)
+library(hrbrthemes)
 
 
 

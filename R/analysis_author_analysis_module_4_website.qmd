@@ -114,12 +114,12 @@ It is also interesting to note that `bill length` a and `bill depth` are quite d
 #| echo: true
 #| layout-ncol: 2
 
-data %>%
- group_by(species) %>% 
+data  |> 
+ group_by(species)  |>  
   summarise(average_bill_length = mean(bill_length_mm, na.rm = TRUE))
 
-data %>%
- group_by(species) %>% 
+data  |> 
+ group_by(species) |> 
   summarise(average_bill_depth = mean(bill_depth_mm, na.rm = TRUE))
 ```
 
@@ -161,7 +161,11 @@ datatable(data_clean, filter = "top")
 
 ```
 
-Making scatterplot interactive
+### 
+
+::: callout-note
+### Lesson \# 2 exercise:  making penguins plot interactive
+:::
 
 ```{r interactive_scatterplot}
 #| echo: true
@@ -204,15 +208,15 @@ bill_length_per_specie <- palmerpenguins::penguins |>
 
 kable(bill_length_per_specie)
 
-bill_depth_per_specie <- palmerpenguins::penguins %>%
- group_by(species) %>% 
+bill_depth_per_specie <- palmerpenguins::penguins  |> 
+ group_by(species)  |>  
   summarise(average_bill_depth = mean(bill_depth_mm, na.rm = TRUE))
 
 kable(bill_depth_per_specie)
 
-bill_length_adelie <- bill_length_per_specie %>%
-  filter(species == "Adelie") %>%
-  pull(average_bill_length) %>%
+bill_length_adelie <- bill_length_per_specie  |> 
+  filter(species == "Adelie")  |> 
+  pull(average_bill_length)  |> 
   round(2)
 
 

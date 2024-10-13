@@ -72,6 +72,10 @@ Links and images
 
 To create hyperlink [Google](www.google.com)
 
+Adding an image, prepend an exclamation mark ! to a hyperlink ().
+
+![Penguins](images/penguins.jpg)
+
 ### Lesson 4
 
 Correct procedure to embedding R Code with a Quarto report.
