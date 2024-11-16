@@ -19,13 +19,13 @@ format:
     toc: true
     theme: Zephyr
     number-sections: true
+    fig-align: center
 execute: 
   warning: false
   message: false
   echo: false
 editor_options: 
   chunk_output_type: console
-fig-cap-location: margin
 css: style.css
 ---
 
@@ -164,7 +164,7 @@ datatable(data_clean, filter = "top")
 ### 
 
 ::: callout-note
-### Lesson \# 2 exercise:  making penguins plot interactive
+### Lesson \# 2 exercise: making penguins plot interactive
 :::
 
 ```{r interactive_scatterplot}

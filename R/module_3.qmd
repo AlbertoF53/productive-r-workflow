@@ -11,6 +11,7 @@ format:
     toc: true
     theme: Zephyr
     number-sections: true
+    fig-align: center
 execute: 
   warning: false
   message: false
@@ -113,7 +114,7 @@ p
 
 ggplotly provides information for each point displayed in the graph. On the following chart you can zoom, hover, pan, export to png and more!
 
-```{r aliving_with_ploty}
+```{r aliving_with_ploty, fig.cap="Figure:Life Expectancy & Nation's wealth"}
 #| echo: true
 
 library(plotly)
@@ -347,7 +348,7 @@ theme_set(yan_holtz_theme())
 
 ------------------------------------------------------------------------
 
-## Lesson 6
+## Quarto Tips
 
 More Quarto tips
 
@@ -360,4 +361,104 @@ Instead, armed with a solid Quarto foundation, I recommend perusing the [compila
 
 I'm confident you'll discover several **valuable insights** that you'll be eager to incorporate into your next report!
 
+### Centering figure
+
+```{r, centering_figure, fig.height=6, fig.width=6, fig.cap="Figure: Important caption"}
+#|echo: true
+
+library(tidyverse)
+
+mpg %>%
+  ggplot(aes(x = reorder(class, hwy), y = hwy, fill = class)) +
+  geom_boxplot() +
+  xlab("class") +
+  theme(legend.position = "none")
+
+
+```
+
+Another alternative
+
+```{r, fig.align='center', fig.width=6, fig.height =6, fig.cap="Figure: Here is a really important caption"}
+#|echo: true
+
+library(tidyverse)
+
+mpg %>%
+  ggplot(aes(x = reorder(class, hwy), y = hwy, fill = class)) +
+  geom_boxplot() +
+  xlab("class") +
+  theme(legend.position = "none")
+
+
+```
+
 ------------------------------------------------------------------------
+
+### Plotly in Quarto Trick
+
+`plotly` is such an amazing package. With the `ggplotly` function you can make your `ggplot` interactive in just 1 line of code!
+
+```{r turn_in_interactive_table}
+#|echo: true
+
+# libraries()
+
+# Libraries
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(hrbrthemes)
+
+# Load dataset from github
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered.csv", header = T)
+
+data <- data |> 
+  mutate(date = as.Date(date))
+
+
+# Usual area chart
+plot <- data  |> 
+  ggplot( aes(x = date, y = value)) +
+    geom_area(fill = "#69b3a2", alpha = 0.5) +
+    geom_line(color = "#69b3a2") +
+    ylab("bitcoin price ($)") +
+    theme_ipsum()
+
+ggplotly(plot)
+
+
+# 
+# # 
+# # # Turn it interactive with ggplotly
+# # p <- ggplotly(p)
+# # p
+
+
+```
+
+### ggiraph
+
+### `ggiraph` is one of the most powerful R package when it comes to interactive data visualization.
+
+One feature I really like is the ability to **connect 2 charts together**.
+
+Since quarto supports interactive outputs, let's make the most of it! In the example below, you can **hover over a circle** on the map to **highlight** a line on the chart (and reciprocally)!
+
+### Callout
+
+Use **callouts** to draw attention to **important** complementary content without interupting the document flow.
+
+5 types of callout exist out of the box, and they are really easy to use. Here is an example with a `note` callout:
+
+::: callout-note
+## This is an example of an tip callout
+:::
+
+::: callout-warning
+## This is an example of a warning callout
+:::
+
+
+
+

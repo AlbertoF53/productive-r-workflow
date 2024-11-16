@@ -12,6 +12,7 @@ format:
     toc: true
     theme: Zephyr
     number-sections: true
+    is-particlejs-enabled: true  
 execute: 
   warning: false
   message: false
@@ -42,6 +43,8 @@ The role of Github desktop in linking together computer and the cloud
 
 All changes take place in GitHub. None of the changes have been updated into the remote repository.
 
+![Incremental steps when committing changes](images/Mental_Model.png)
+
 ## Lesson 5 Push
 
 Now, it's time to send them to the cloud. Let's hit the **push** button! 🚀
@@ -53,6 +56,8 @@ Throughout the previous lessons, we've made changes to the local version of the 
 Now, it's time to synchronize the local changes with the version on GitHub! This process is accomplished through a procedure known as a **push**.
 
 ![Pushing the local changes into GitHub cloud](images/push.jpg)
+
+![Push change in GitHub Desktop](images/push_changes.png){fig-align="center"}
 
 ## Lesson 6 From repo to website
 

@@ -151,7 +151,7 @@ datatable(data_clean, filter = "top")
 
 ```
 
-Making scatterplot interactive
+Making scatterplot interactive using the library `ggplotly`.
 
 ```{r interactive_scatterplot}
 #| echo: true
